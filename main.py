@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
@@ -16,6 +16,7 @@ ACCURACY_SCORE = {}
 PREDICTIONS = {}
 MODELS = {
     'dt': 'Decision Tree Classifier',
+    'rf': 'Random Forest Classifier',
     'svml': 'Linear Support Vector Machine',
     'svmr': 'RBF Support Vector Machine',
     'svms': 'Sigmoid Support Vector Machine',
@@ -51,6 +52,16 @@ def decisionTreeClassifierModel():
     dt_clf = DecisionTreeClassifier(criterion='entropy')
     dt_accuracy_score = crossValScore(dt_clf, all_features_scaled)
     mammogram_predictor(dt_clf, model_key, dt_accuracy_score)
+
+'''
+Random Forest Classifier
+Create a random forest classifier and fit it to the training data
+'''
+def RandomForestClassifierModel():
+    model_key = 'rf'
+    rf_clf = RandomForestClassifier(n_estimators=10, random_state=1)
+    rf_accuracy_score = crossValScore(rf_clf, all_features_scaled)
+    mammogram_predictor(rf_clf, model_key, rf_accuracy_score)
     
 '''
 Support Vector Machine (SVM)
@@ -177,6 +188,7 @@ def mammogram_predictor(model, key, accuracy, nb=False):
 def main():
     print('\nMammogram mass prediction results:')
     decisionTreeClassifierModel()
+    RandomForestClassifierModel()
     supportVectorMachineLinearModel()
     supportVectorMachineRbfModel()
     supportVectorMachineSigmoidModel()
